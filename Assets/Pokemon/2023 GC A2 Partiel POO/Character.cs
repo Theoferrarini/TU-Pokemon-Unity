@@ -35,12 +35,15 @@ namespace _2023_GC_A2_Partiel_POO.Level_2
             _baseDefense = baseDefense;
             _baseSpeed = baseSpeed;
             _baseType = baseType;
+            CurrentHealth = baseHealth; // Initialiser CurrentHealth
         }
+
         /// <summary>
         /// HP actuel du personnage
         /// </summary>
         public int CurrentHealth { get; private set; }
-        public TYPE BaseType { get => _baseType;}
+        public TYPE BaseType { get => _baseType; }
+
         /// <summary>
         /// HPMax, prendre en compte base et equipement potentiel
         /// </summary>
@@ -48,9 +51,10 @@ namespace _2023_GC_A2_Partiel_POO.Level_2
         {
             get
             {
-                throw new NotImplementedException();
+                return _baseHealth + (CurrentEquipment?.BonusHealth ?? 0);
             }
         }
+
         /// <summary>
         /// ATK, prendre en compte base et equipement potentiel
         /// </summary>
@@ -58,9 +62,10 @@ namespace _2023_GC_A2_Partiel_POO.Level_2
         {
             get
             {
-                throw new NotImplementedException();
+                return _baseAttack + (CurrentEquipment?.BonusAttack ?? 0);
             }
         }
+
         /// <summary>
         /// DEF, prendre en compte base et equipement potentiel
         /// </summary>
@@ -68,9 +73,10 @@ namespace _2023_GC_A2_Partiel_POO.Level_2
         {
             get
             {
-                throw new NotImplementedException();
+                return _baseDefense + (CurrentEquipment?.BonusDefense ?? 0);
             }
         }
+
         /// <summary>
         /// SPE, prendre en compte base et equipement potentiel
         /// </summary>
@@ -78,20 +84,22 @@ namespace _2023_GC_A2_Partiel_POO.Level_2
         {
             get
             {
-                throw new NotImplementedException();
+                return _baseSpeed + (CurrentEquipment?.BonusSpeed ?? 0);
             }
         }
+
         /// <summary>
         /// Equipement unique du personnage
         /// </summary>
         public Equipment CurrentEquipment { get; private set; }
+
         /// <summary>
         /// null si pas de status
         /// </summary>
         public StatusEffect CurrentStatus { get; private set; }
 
-        public bool IsAlive => throw new NotImplementedException();
-
+        public bool IsAlive => CurrentHealth > 0;
+        public bool HasPriority => CurrentEquipment?.HasPriority ?? false;
 
         /// <summary>
         /// Application d'un skill contre le personnage
@@ -99,11 +107,19 @@ namespace _2023_GC_A2_Partiel_POO.Level_2
         /// Vous pouvez adapter au besoin
         /// </summary>
         /// <param name="s">skill attaquant</param>
-        /// <exception cref="NotImplementedException"></exception>
         public void ReceiveAttack(Skill s)
         {
-            throw new NotImplementedException();
+            int damage = s.Power - Defense;
+            if (damage > 0)
+            {
+                CurrentHealth -= damage;
+                if (CurrentHealth < 0)
+                {
+                    CurrentHealth = 0;
+                }
+            }
         }
+
         /// <summary>
         /// Equipe un objet au personnage
         /// </summary>
@@ -111,15 +127,37 @@ namespace _2023_GC_A2_Partiel_POO.Level_2
         /// <exception cref="ArgumentNullException">Si equipement est null</exception>
         public void Equip(Equipment newEquipment)
         {
-            throw new NotImplementedException();
+            if (newEquipment == null)
+            {
+                throw new ArgumentNullException(nameof(newEquipment));
+            }
+
+            CurrentEquipment = newEquipment;
+            if (CurrentHealth > MaxHealth)
+            {
+                CurrentHealth = MaxHealth;
+            }
         }
+
         /// <summary>
         /// Desequipe l'objet en cours au personnage
         /// </summary>
         public void Unequip()
         {
-            throw new NotImplementedException();
+            CurrentEquipment = null;
         }
 
+        /// <summary>
+        /// Soigne le personnage
+        /// </summary>
+        /// <param name="amount">Quantité de HP à régénérer</param>
+        public void Heal(int amount)
+        {
+            CurrentHealth += amount;
+            if (CurrentHealth > MaxHealth)
+            {
+                CurrentHealth = MaxHealth;
+            }
+        }
     }
 }
