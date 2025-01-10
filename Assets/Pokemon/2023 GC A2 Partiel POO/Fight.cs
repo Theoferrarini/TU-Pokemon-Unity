@@ -47,5 +47,14 @@ namespace _2023_GC_A2_Partiel_POO.Level_2
                 }
             }
         }
+
+        /// <summary>
+        /// Termine le tour et applique les effets de statut
+        /// </summary>
+        public void EndTurn()
+        {
+            Character1.ApplyEffect();
+            Character2.ApplyEffect();
+        }
     }
 }

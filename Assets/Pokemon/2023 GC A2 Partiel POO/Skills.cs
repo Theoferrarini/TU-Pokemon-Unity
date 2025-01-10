@@ -33,11 +33,11 @@ namespace _2023_GC_A2_Partiel_POO.Level_2
         public FireBall() : base(TYPE.FIRE, 50, StatusPotential.BURN) { }
     }
     /// <summary>
-    /// Attaque eau basique
+    /// Attaque eau crazy (pour le test)
     /// </summary>
     public class WaterBlouBlou : Skill
     {
-        public WaterBlouBlou() : base(TYPE.WATER, 20, StatusPotential.NONE) { }
+        public WaterBlouBlou() : base(TYPE.WATER, 20, StatusPotential.CRAZY) { }
     }
     /// <summary>
     /// Attaque plante qui inflige le statut SLEEP

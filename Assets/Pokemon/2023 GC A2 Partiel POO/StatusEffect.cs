@@ -8,7 +8,7 @@ namespace _2023_GC_A2_Partiel_POO.Level_2
     /// </summary>
     public enum StatusPotential { NONE, SLEEP, BURN, CRAZY }
     
-    public class StatusEffect
+public class StatusEffect
     {
         /// <summary>
         /// Factory retournant un nouvel objet représentant le statut généré
@@ -48,7 +48,7 @@ namespace _2023_GC_A2_Partiel_POO.Level_2
         /// <summary>
         /// Nombre de tour de l'effet
         /// </summary>
-        public int RemainingTurn { get; protected set; }
+        public int RemainingTurn { get; set; }
         /// <summary>
         /// Nombre de dégât à la fin de chaque tour
         /// </summary>
@@ -66,9 +66,9 @@ namespace _2023_GC_A2_Partiel_POO.Level_2
         /// Méthode enclenché par le système de combat à la fin de chaque tour
         /// Vous pouvez ajouter du contenu si besoin
         /// </summary>
-        public virtual void EndTurn()
+        public virtual void ApplyEffect(Character character)
         {
-            throw new NotImplementedException();
+            // Default implementation does nothing
         }
     }
 
@@ -77,8 +77,13 @@ namespace _2023_GC_A2_Partiel_POO.Level_2
     /// </summary>
     public class SleepStatus : StatusEffect
     {
-        public SleepStatus() : base(5, 0, false, 0f)
+        public SleepStatus() : base(2, 0, false, 0f)
         {
+        }
+
+        public override void ApplyEffect(Character character)
+        {
+            // Sleep effect does nothing each turn, just prevents attacking
         }
     }
 
@@ -87,8 +92,17 @@ namespace _2023_GC_A2_Partiel_POO.Level_2
     /// </summary>
     public class BurnStatus : StatusEffect
     {
-        public BurnStatus() : base(5, 10, true, 0f)
+        public BurnStatus() : base(3, 10, true, 0f)
         {
+        }
+
+        public override void ApplyEffect(Character character)
+        {
+            character.CurrentHealth -= DamageEachTurn;
+            if (character.CurrentHealth < 0)
+            {
+                character.CurrentHealth = 0;
+            }
         }
     }
 
@@ -99,6 +113,15 @@ namespace _2023_GC_A2_Partiel_POO.Level_2
     {
         public CrazyStatus() : base(1, 0, false, 0.3f)
         {
+        }
+
+        public override void ApplyEffect(Character character)
+        {
+            character.CurrentHealth -= (int)(character.Attack * DamageOnAttack);
+            if (character.CurrentHealth < 0)
+            {
+                character.CurrentHealth = 0;
+            }
         }
     }
 

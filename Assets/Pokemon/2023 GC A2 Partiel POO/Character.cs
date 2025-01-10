@@ -41,7 +41,7 @@ namespace _2023_GC_A2_Partiel_POO.Level_2
         /// <summary>
         /// HP actuel du personnage
         /// </summary>
-        public int CurrentHealth { get; private set; }
+        public int CurrentHealth { get; set; }
         public TYPE BaseType { get => _baseType; }
 
         /// <summary>
@@ -157,6 +157,32 @@ namespace _2023_GC_A2_Partiel_POO.Level_2
             if (CurrentHealth > MaxHealth)
             {
                 CurrentHealth = MaxHealth;
+            }
+        }
+
+        /// <summary>
+        /// Applique un statut au personnage
+        /// </summary>
+        /// <param name="status">Statut à appliquer</param>
+        public void ApplyStatus(StatusEffect status)
+        {
+            CurrentStatus = status;
+        }
+
+        /// <summary>
+        /// Applique les effets de statut au personnage
+        /// </summary>
+        public void ApplyEffect()
+        {
+            if (CurrentStatus != null)
+            {
+                CurrentStatus.ApplyEffect(this);
+
+                CurrentStatus.RemainingTurn--;
+                if (CurrentStatus.RemainingTurn <= 0)
+                {
+                    CurrentStatus = null;
+                }
             }
         }
     }
