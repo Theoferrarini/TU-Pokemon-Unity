@@ -18,7 +18,7 @@ namespace _2023_GC_A2_Partiel_POO.Tests.Level_2
         }
 
         [Test]
-        public void HPCurrentFollowsHPMaxWhenLowered()
+        public void HPCurrentFollowsHPMaxWhenLowered() 
         {
             var c = new Character(100, 50, 30, 20, TYPE.NORMAL);
             var e = new Equipment(-20, 90, 70, 12);
